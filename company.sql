@@ -156,4 +156,3 @@ DELIMITER ;
 
 delete from Project where p_no=241563; -- Will give error 
 
-

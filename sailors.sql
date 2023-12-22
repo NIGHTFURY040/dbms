@@ -36,6 +36,10 @@ insert into Boat values
 (1,"Boat_1", "Green"),
 (2,"Boat_2", "Red"),
 (103,"Boat_3", "Blue");
+insert into Boat values
+(12,"1storm", "Greeen");
+insert into Boat values
+(103,"Bost_3", "Green");
 
 insert into reserves values
 (1,103,"2023-01-01"),
@@ -44,6 +48,10 @@ insert into reserves values
 (3,2,"2023-03-06"),
 (5,103,"2023-03-06"),
 (1,1,"2023-03-06");
+insert into reserves values
+(1,12,"2022-01-01");
+insert into reserves values
+(1,103,"2023-01-01");
 
 select * from Sailors;
 select * from Boat;
@@ -66,20 +74,27 @@ where reserves.bid=103);
 
 
 -- Find the names of the sailor who have not reserved a boat whose name contains the string "storm". Order the name in the ascending order
-
 select s.sname
 from Sailors s
 where s.sid not in 
 (select s1.sid from Sailors s1, reserves r1 where r1.sid=s1.sid and s1.sname like "%storm%")
 and s.sname like "%storm%"
 order by s.sname ASC;
+#own query-->
+select s.sname
+from Sailors s
+where s.sid not in
+(select s1.sid
+from Sailors s1,Reserves r,Boat b 
+where s1.sid=r.sid and r.bid=b.bid and b.bname like "%storm%")
+order by s.sname;
 
 -- Find the name of the sailors who have reserved all boats
 
-select sname from Sailors s where not exists
+select s.sname from Sailors s where not exists
 	(select * from Boat b where not exists
 		(select * from reserves r where r.sid=s.sid and b.bid=r.bid));
-
+      
 
 -- Find the name and age of the oldest sailor
 
@@ -125,7 +140,7 @@ select * from ReservedBoatsWithRatedSailor;
 -- Trigger that prevents boats from being deleted if they have active reservation
 
 DELIMITER //
-create or replace trigger CheckAndDelete
+create trigger CheckAndDelete
 before delete on Boat
 for each row
 BEGIN
@@ -180,11 +195,3 @@ insert into TempTable values
 (curdate()); -- This will delete the expired reservations and also insert the current date to temp table
 
 select * from reserves; -- Notice that all expired reservations are deleted
-
-
-
-
-
-
-
-

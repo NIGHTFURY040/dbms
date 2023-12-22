@@ -147,7 +147,6 @@ DELIMITER ;
 
 DELETE FROM Warehouses WHERE warehouse_id = 2; -- Will give error since an item has to be shipped from warehouse 2
 
-
 -- A tigger that updates order_amount based on quantity and unit price of order_item
 
 DELIMITER $$
