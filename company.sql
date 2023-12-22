@@ -91,7 +91,7 @@ SELECT * FROM WorksOn;
 
 -- Make a list of all project numbers for projects that involve an employee whose last name is ‘Scott’, either as a worker or as a manager of the department that controls the project.
 
-select p_no,p_name,name from Project p, Employee e where p.d_no=e.d_no and e.name like "%Krishna";
+select p.p_no,p.p_name,e.name from Project p, Employee e where p.d_no=e.d_no and e.name like "%Krishna";
 
 
 -- Show the resulting salaries if every employee working on the ‘IoT’ project is given a 10 percent raise

@@ -98,6 +98,7 @@ select order_id,ship_date from Shipments where warehouse_id=0001;
 
 -- List the Warehouse information from which the Customer named "Kumar" was supplied his orders. Produce a listing of Order#, Warehouse#
 select order_id,warehouse_id from Warehouses natural join Shipments where order_id in (select order_id from Orders where cust_id in (Select cust_id from Customers where cname like "%Kumar%"));
+select s.order_id,s.warehouse_id from Shipments s,Orders o, Customers c where s.order_id=o.order_id and o.cust_id=c.cust_id and c.cname="Kumar";
 
 -- Produce a listing: Cname, #ofOrders, Avg_Order_Amt, where the middle column is the total number of orders by the customer and the last column is the average order amount for that customer. (Use aggregate functions) 
 select cname, COUNT(*) as no_of_orders, AVG(order_amt) as avg_order_amt
@@ -105,8 +106,17 @@ from Customers c, Orders o
 where c.cust_id=o.cust_id 
 group by cname;
 
+-- delete all orders from customer named Kumar(own)
+delete from Orders o where o.cust_id in (select c.cust_id from Customers c where c.cname="%Kumar%"); 
+insert into Orders values(003, "2019-10-02", 0003, 2500);
+insert into orderitems values(003, 0005, 5);
+insert into Shipments values(003, 0004, "2019-10-07");
+-- Delete all orders for customer named "Kumar".
+delete from Orders where cust_id = (select cust_id from Customers where cname like "%Kumar%");
+
 -- Find the item with the maximum unit price.
-select max(unitprice) from Items;
+select max(unitprice) from Items; -- or the following
+select Item_id,unitprice from Items where unitprice in (select max(unitprice) from Items);
 
 -- Create a view to display orderID and shipment date of all orders shipped from a warehouse 2.
 
@@ -125,10 +135,6 @@ from Warehouses w, Customers c, Orders o, Shipments s
 where w.warehouse_id = s.warehouse_id and s.order_id=o.order_id and o.cust_id=c.cust_id and c.cname="Kumar";
 
 select * from WharehouseWithKumarOrders;
-
--- Delete all orders for customer named "Kumar".
-delete from Orders where cust_id = (select cust_id from Customers where cname like "%Kumar%");
-
 
 -- Trigger that prevents warehouse details from being deleted if any item has to be shipped from that warehouse
 
@@ -160,8 +166,12 @@ DELIMITER ;
 
 INSERT INTO Orders VALUES
 (006, "2020-12-23", 0004, 1200);
-
+insert into orders values(007,"2021-10-10",0003,35); -- own
+delete from orders where odate="2021-10-10";
 INSERT INTO OrderItems VALUES 
 (006, 0001, 5); -- This will automatically update the Orders Table also
+-- own
+INSERT INTO OrderItems VALUES 
+(007, 0001, 5); -- (400*5=2000) This will automatically update the Orders Table also
 
 select * from Orders;

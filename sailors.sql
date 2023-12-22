@@ -1,5 +1,4 @@
 drop database if exists sailors;
-
 create database sailors;
 use sailors;
 

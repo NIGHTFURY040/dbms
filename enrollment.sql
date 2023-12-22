@@ -112,13 +112,13 @@ SELECT DISTINCT c.dept
      FROM Course c,BookAdoption b,TextBook t
      WHERE c.course=b.course
      AND t.bookIsbn=b.bookIsbn
-     AND t.publisher='PEARSON')
-     AND c.dept NOT IN
-     ( SELECT c.dept
-     FROM Course c, BookAdoption b, TextBook t
-     WHERE c.course=b.course
-     AND t.bookIsbn=b.bookIsbn
-     AND t.publisher!='PEARSON');
+     AND t.publisher='PEARSON'); -- below was own(not necessary)
+--      AND c.dept NOT IN
+--      ( SELECT c.dept
+--      FROM Course c, BookAdoption b, TextBook t
+--      WHERE c.course=b.course
+--      AND t.bookIsbn=b.bookIsbn
+--      AND t.publisher!='PEARSON'); 
 
 
 -- List the students who have scored maximum marks in ‘DBMS’ course.
@@ -152,7 +152,7 @@ select * from CourseRelatedBooks;
 
 -- Create a trigger such that it Deletes all records from enroll table when course is deleted 
 DELIMITER //
-create or replace trigger DeleteRecords
+create trigger DeleteRecords
 after delete on Course
 for each row
 BEGIN
@@ -165,11 +165,11 @@ delete from Course where course=2; -- Will also delete records from Enroll table
 
 -- Create a trigger that prevents a student from enrolling in a course if the marks pre_requisit is less than the given threshold 
 DELIMITER //
-create or replace trigger PreventEnrollment
+create  trigger PreventEnrollment
 before insert on Enroll
 for each row
 BEGIN
-	IF (new.marks<10) THEN
+	IF (new.marks<40) THEN
 		signal sqlstate '45000' set message_text='Marks below threshold';
 	END IF;
 END;//

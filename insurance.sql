@@ -76,17 +76,15 @@ INSERT INTO participated VALUES
 ("D444", "KA-21-BD-4728", 54634, 5000),
 ("D222", "KA-09-MA-1234", 65738, 25000);
 
-
-
 -- Find the total number of people who owned a car that were involved in accidents in 2021
 
-select COUNT(driver_id)
+select COUNT(driver_id) as numofpeople
 from participated p, accident a
 where p.report_no=a.report_no and a.accident_date like "2021%";
 
 -- Find the number of accident in which cars belonging to smith were involved
 
-select COUNT(distinct a.report_no)
+select COUNT(distinct a.report_no) as cnt
 from accident a
 where exists 
 (select * from person p, participated ptd where p.driver_id=ptd.driver_id and p.driver_name="Smith" and a.report_no=ptd.report_no);
@@ -142,7 +140,7 @@ select * from DriversWithAccidentInPlace;
 -- Trigger that prevents a driver with total_damage_amount greater than Rs. 50,000 from owning a car
 
 delimiter //
-create or replace trigger PreventOwnership 
+create trigger PreventOwnership 
 before insert on owns 
 for each row
 begin
@@ -171,19 +169,6 @@ END;//
 DELIMITER ;
 
 INSERT INTO participated VALUES
-("D222", "KA-20-AB-4223", 66666, 20000);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+("D222", "KA-20-AB-4223", 66666, 290000);
+delete from participated where reg_no="KA-09-MA-1234";
 
