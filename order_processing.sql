@@ -166,7 +166,7 @@ DELIMITER ;
 
 INSERT INTO Orders VALUES
 (006, "2020-12-23", 0004, 1200);
-insert into orders values(007,"2021-10-10",0003,35); -- own
+insert into orders values(007,"2021-10-10",0003,35); -- own below is to delete so as to show
 delete from orders where odate="2021-10-10";
 INSERT INTO OrderItems VALUES 
 (006, 0001, 5); -- This will automatically update the Orders Table also
