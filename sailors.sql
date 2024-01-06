@@ -79,6 +79,8 @@ where s.sid not in
 (select s1.sid from Sailors s1, reserves r1 where r1.sid=s1.sid and s1.sname like "%storm%")
 and s.sname like "%storm%"
 order by s.sname ASC;
+
+
 #own query-->
 select s.sname
 from Sailors s
